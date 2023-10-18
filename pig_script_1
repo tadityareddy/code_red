@@ -1,0 +1,17 @@
+-- Load the data from 'st.txt' using PigStorage and define the schema
+rl = LOAD 'hdfs://localhost:9000/ex/st.txt' using PigStorage(',') as (Name: chararray, dist: chararray, age: int, gender: chararray);
+
+-- Display the loaded data
+dump rl;
+
+-- Filter the data to select male students
+ml = FILTER rl by gender=='male';
+
+-- Display the male students' data
+dump ml;
+
+-- Project the 'Name' field from the filtered data
+fe = FOREACH ml GENERATE Name;
+
+-- Display the names of male students
+dump fe;
