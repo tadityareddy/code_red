@@ -1,0 +1,23 @@
+-- Filter the data to select students from Guntur district
+dd = FILTER rl by dist=='guntur';
+
+-- Display the filtered data
+dump dd;
+
+-- Project the 'Name' field from the filtered data
+fe2 = FOREACH dd GENERATE Name;
+
+-- Display the names of students from Guntur district
+dump fe2;
+
+-- Group the names of students
+g = GROUP fe2 ALL;
+
+-- Display the grouped data
+dump g;
+
+-- Calculate the count of students in the group
+a_count = FOREACH g GENERATE COUNT(fe2);
+
+-- Display the count of students
+dump a_count;
