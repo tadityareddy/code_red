@@ -1,0 +1,17 @@
+-- Filter the data to select female students
+fml = FILTER rl by gender=='female';
+
+-- Display the filtered data
+dump fml;
+
+-- Group the data by district
+gr = GROUP rl by dist;
+
+-- Display the grouped data
+dump gr;
+
+-- Calculate the count of female students in each district
+co = FOREACH gr GENERATE group, COUNT(fml);
+
+-- Display the district-wise count of female students
+DUMP co;
