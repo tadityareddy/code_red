@@ -1,0 +1,51 @@
+-- Load data 
+rl = LOAD 'st.txt' USING PigStorage(',') AS (Name:chararray, dist:chararray, age:int, gender:chararray);
+
+-- (John, guntur, 20, male)  
+-- (Rita, vijaywada, 22, female)
+-- (Amit, hyderabad, 21, male)
+
+-- (i) Display names of male students
+ml = FILTER rl BY gender == 'male'; 
+
+-- (John, guntur, 20, male)
+-- (Amit, hyderabad, 21, male)
+
+fe = FOREACH ml GENERATE Name;
+
+-- John  
+-- Amit
+
+-- (ii) Count students from Guntur 
+dd = FILTER rl BY dist == 'guntur';
+
+-- (John, guntur, 20, male)
+
+fe2 = FOREACH dd GENERATE Name;
+
+-- John
+
+g = GROUP fe2 ALL; 
+
+-- (John) 
+
+a_count = FOREACH g GENERATE COUNT(fe2);
+
+-- 1
+
+-- (iii) District-wise count of female students
+fml = FILTER rl BY gender == 'female';  
+
+-- (Rita, vijaywada, 22, female)
+
+gr = GROUP rl BY dist;
+
+-- (John, guntur, 20, male)   
+-- (Rita, vijaywada, 22, female)
+-- (Amit, hyderabad, 21, male)
+
+co = FOREACH gr GENERATE group, COUNT(fml); 
+
+-- (guntur, 0)
+-- (vijaywada, 1)
+-- (hyderabad, 0)
